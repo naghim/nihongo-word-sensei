@@ -16,6 +16,13 @@ export const QuizCard = ({
   quizMode,
   onAnswer,
 }: QuizCardProps) => {
+  const OPTION_LETTERS = {
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "D",
+  };
+
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
 
@@ -163,9 +170,9 @@ export const QuizCard = ({
               )}
 
               {/* Option Label */}
-              <div className="absolute top-3 left-3">
+              <div className="absolute -top-1 left-1">
                 <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                  {String.fromCharCode(65 + index)}
+                  {OPTION_LETTERS[index]}
                 </div>
               </div>
             </CardContent>
