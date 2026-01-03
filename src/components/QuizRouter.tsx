@@ -16,6 +16,7 @@ export const QuizRouter = () => {
     isQuizStarted,
     showModeSelector,
     isQuizCompleted,
+    visibleStats,
     setQuizMode,
     setQuestionLimit,
     handleAnswer,
@@ -24,6 +25,7 @@ export const QuizRouter = () => {
     changeModeAndRestart,
     handleTryAgain,
     handleChangeModeFromResults,
+    toggleStatVisibility,
   } = useQuizLogic();
 
   if (isQuizCompleted) {
@@ -44,9 +46,11 @@ export const QuizRouter = () => {
         quizMode={quizMode}
         questionLimit={questionLimit}
         showModeSelector={showModeSelector}
+        visibleStats={visibleStats}
         onModeChange={setQuizMode}
         onQuestionLimitChange={setQuestionLimit}
         onStartQuiz={startQuiz}
+        onToggleStat={toggleStatVisibility}
       />
     );
   }
@@ -60,6 +64,7 @@ export const QuizRouter = () => {
       questionLimit={questionLimit}
       questionNumber={questionNumber}
       streak={streak}
+      visibleStats={visibleStats}
       onAnswer={handleAnswer}
       onChangeMode={changeModeAndRestart}
       onReset={resetQuiz}

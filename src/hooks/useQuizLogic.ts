@@ -17,6 +17,13 @@ export const useQuizLogic = () => {
   const [showModeSelector, setShowModeSelector] = useState(true);
   const { toast } = useToast();
 
+  const [visibleStats, setVisibleStats] = useState<string[]>([
+    "questionCounter",
+    "score",
+    "accuracy",
+    "streak",
+  ]);
+
   const generateNewQuestion = () => {
     const randomItems = getRandomVocabulary(4);
     const questionItem =
@@ -90,6 +97,12 @@ export const useQuizLogic = () => {
     setShowModeSelector(true);
   };
 
+  const toggleStatVisibility = (stat: string) => {
+    setVisibleStats((prev) =>
+      prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat]
+    );
+  };
+
   // Check if quiz is completed
   const isQuizCompleted = questionNumber >= questionLimit && !isQuizStarted;
 
@@ -105,6 +118,7 @@ export const useQuizLogic = () => {
     isQuizStarted,
     showModeSelector,
     isQuizCompleted,
+    visibleStats,
 
     // Actions
     setQuizMode,
@@ -115,5 +129,6 @@ export const useQuizLogic = () => {
     changeModeAndRestart,
     handleTryAgain,
     handleChangeModeFromResults,
+    toggleStatVisibility,
   };
 };

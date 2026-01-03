@@ -11,6 +11,7 @@ interface QuizGameProps {
   questionLimit: number;
   questionNumber: number;
   streak: number;
+  visibleStats: string[];
   onAnswer: (isCorrect: boolean) => void;
   onChangeMode: () => void;
   onReset: () => void;
@@ -24,6 +25,7 @@ export const QuizGame = ({
   questionLimit,
   questionNumber,
   streak,
+  visibleStats,
   onAnswer,
   onChangeMode,
   onReset,
@@ -40,6 +42,7 @@ export const QuizGame = ({
           total={questionLimit}
           current={questionNumber + 1}
           streak={streak}
+          visibleStats={visibleStats}
         />
 
         {/* Quiz Card */}

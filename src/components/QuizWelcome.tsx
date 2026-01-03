@@ -9,9 +9,11 @@ interface QuizWelcomeProps {
   quizMode: QuizMode;
   questionLimit: number;
   showModeSelector: boolean;
+  visibleStats: string[];
   onModeChange: (mode: QuizMode) => void;
   onQuestionLimitChange: (limit: number) => void;
   onStartQuiz: () => void;
+  onToggleStat: (stat: string) => void;
 }
 
 export const QuizWelcome = ({
@@ -19,9 +21,11 @@ export const QuizWelcome = ({
   quizMode,
   questionLimit,
   showModeSelector,
+  visibleStats,
   onModeChange,
   onQuestionLimitChange,
   onStartQuiz,
+  onToggleStat,
 }: QuizWelcomeProps) => {
   const featureHighlights: Array<{
     icon: LucideIcon;
@@ -142,6 +146,8 @@ export const QuizWelcome = ({
                   onModeChange={onModeChange}
                   selectedQuestionLimit={questionLimit}
                   onQuestionLimitChange={onQuestionLimitChange}
+                  visibleStats={visibleStats}
+                  onToggleStat={onToggleStat}
                 />
               )}
 
