@@ -34,8 +34,7 @@ export const useQuizLogic = () => {
   };
 
   const handleAnswer = (isCorrect: boolean) => {
-    const newQuestionNumber =
-      questionNumber !== questionLimit ? questionNumber + 1 : questionNumber;
+    const newQuestionNumber = questionNumber + 1;
     setQuestionNumber(newQuestionNumber);
 
     if (isCorrect) {
