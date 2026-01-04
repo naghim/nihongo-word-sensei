@@ -40,7 +40,11 @@ export const QuizGame = ({
         <ScoreDisplay
           score={score}
           total={questionLimit}
-          current={questionNumber + 1}
+          current={
+            questionNumber !== questionLimit
+              ? questionNumber + 1
+              : questionNumber
+          }
           streak={streak}
           visibleStats={visibleStats}
         />

@@ -24,7 +24,6 @@ export const QuizRouter = () => {
     resetQuiz,
     changeModeAndRestart,
     handleTryAgain,
-    handleChangeModeFromResults,
     toggleStatVisibility,
   } = useQuizLogic();
 
@@ -34,7 +33,7 @@ export const QuizRouter = () => {
         score={score}
         questionLimit={questionLimit}
         onTryAgain={handleTryAgain}
-        onChangeMode={handleChangeModeFromResults}
+        onChangeMode={changeModeAndRestart}
       />
     );
   }

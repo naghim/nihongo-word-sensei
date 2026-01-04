@@ -92,11 +92,6 @@ export const useQuizLogic = () => {
     resetQuiz();
   };
 
-  const handleChangeModeFromResults = () => {
-    resetQuiz();
-    setShowModeSelector(true);
-  };
-
   const toggleStatVisibility = (stat: string) => {
     setVisibleStats((prev) =>
       prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat]
@@ -128,7 +123,6 @@ export const useQuizLogic = () => {
     resetQuiz,
     changeModeAndRestart,
     handleTryAgain,
-    handleChangeModeFromResults,
     toggleStatVisibility,
   };
 };
