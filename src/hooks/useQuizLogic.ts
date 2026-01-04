@@ -24,6 +24,14 @@ export const useQuizLogic = () => {
     "streak",
   ]);
 
+  const resetScroll = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
+  };
+
   const generateNewQuestion = () => {
     const randomItems = getRandomVocabulary(4);
     const questionItem =
@@ -68,6 +76,7 @@ export const useQuizLogic = () => {
     setIsQuizStarted(true);
     setShowModeSelector(false);
     generateNewQuestion();
+    resetScroll();
   };
 
   const resetQuiz = () => {
