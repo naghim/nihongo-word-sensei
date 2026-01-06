@@ -1,4 +1,3 @@
-import { QuizHeader } from "./QuizHeader";
 import { ScoreDisplay } from "./ScoreDisplay";
 import { QuizCard } from "./QuizCard";
 import type { VocabularyItem, QuizMode } from "@/types/quiz";
@@ -31,11 +30,8 @@ export const QuizGame = ({
   onReset,
 }: QuizGameProps) => {
   return (
-    <div className="min-h-screen bg-gradient-subtle py-8 px-4">
+    <div className="bg-gradient-subtle py-8 px-4">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <QuizHeader onChangeMode={onChangeMode} onReset={onReset} />
-
         {/* Score Display */}
         <ScoreDisplay
           score={score}

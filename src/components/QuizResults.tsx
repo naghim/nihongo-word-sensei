@@ -24,7 +24,7 @@ export const QuizResults = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-red-50/20 to-white flex items-center py-8 px-4">
+    <div className="bg-gradient-to-br from-white via-red-50/20 to-white flex items-center py-8 px-4">
       <div className="max-w-2xl mx-auto w-full space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         {/* Hero Header */}
         <div className="text-center space-y-3">

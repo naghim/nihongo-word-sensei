@@ -59,8 +59,8 @@ export const QuizWelcome = ({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-red-50/20 to-white">
-      <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-20 pb-1">
+    <div className="bg-gradient-to-br from-white via-red-50/20 to-white">
+      <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-5 pb-5">
         {/* Content */}
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-center">
           {/* Left Section - Hero */}
@@ -168,30 +168,6 @@ export const QuizWelcome = ({
             </div>
           </aside>
         </div>
-
-        {/* Watermark */}
-        <footer className="mt-16 pt-8 border-t border-border/50 text-center">
-          <p className="text-sm text-muted-foreground">
-            Made by{" "}
-            <a
-              href="https://github.com/naghim"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline transition-colors"
-            >
-              naghim
-            </a>{" "}
-            · v1.0 ·{" "}
-            <a
-              href="https://github.com/naghim/nihongo-word-sensei"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline transition-colors"
-            >
-              View on GitHub
-            </a>
-          </p>
-        </footer>
       </div>
     </div>
   );
