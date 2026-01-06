@@ -1,4 +1,17 @@
-export const Header = () => {
+import { RotateCcw, Settings } from "lucide-react";
+import { Button } from "./ui/button";
+
+interface HeaderProps {
+  isQuizStarted: boolean;
+  onChangeMode: () => void;
+  onReset: () => void;
+}
+
+export const Header = ({
+  isQuizStarted,
+  onChangeMode,
+  onReset,
+}: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,6 +33,34 @@ export const Header = () => {
                 Master Japanese vocabulary
               </p>
             </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {isQuizStarted && (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onChangeMode}
+                  className="gap-2 border-gray-200 hover:border-primary/30 hover:bg-gradient-red-soft hover:text-primary transition-all"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">Change Mode</span>
+                  <span className="sm:hidden">Mode</span>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onReset}
+                  className="gap-2 border-gray-200 hover:border-primary/30 hover:bg-gradient-red-soft hover:text-primary transition-all"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  <span className="hidden sm:inline">Reset</span>
+                  <span className="sm:hidden">Reset</span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

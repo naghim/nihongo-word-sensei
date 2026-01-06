@@ -3,6 +3,8 @@ import { QuizGame } from "./QuizGame";
 import { QuizResults } from "./QuizResults";
 import { useQuizLogic } from "@/hooks/useQuizLogic";
 import { vocabularyData } from "@/data/vocabulary";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export const QuizRouter = () => {
   const {
@@ -27,8 +29,20 @@ export const QuizRouter = () => {
     toggleStatVisibility,
   } = useQuizLogic();
 
+  const layout = (component: React.ReactNode) => (
+    <>
+      <Header
+        isQuizStarted={isQuizStarted}
+        onChangeMode={changeModeAndRestart}
+        onReset={resetQuiz}
+      />
+      <main>{component}</main>
+      <Footer />
+    </>
+  );
+
   if (isQuizCompleted) {
-    return (
+    return layout(
       <QuizResults
         score={score}
         questionLimit={questionLimit}
@@ -39,7 +53,7 @@ export const QuizRouter = () => {
   }
 
   if (!isQuizStarted) {
-    return (
+    return layout(
       <QuizWelcome
         vocabularyCount={vocabularyData.length}
         quizMode={quizMode}
@@ -54,7 +68,7 @@ export const QuizRouter = () => {
     );
   }
 
-  return (
+  return layout(
     <QuizGame
       currentQuestion={currentQuestion}
       options={options}
