@@ -72,12 +72,6 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
     }
   };
 
-  useEffect(() => {
-    if (timeLimit === 0 && initialTime > 0) {
-      // setInitialTime(0);
-    }
-  }, [timeLimit, initialTime]);
-
   if (timeLimit === 0) {
     return (
       <div className="rounded-xl border border-border p-4 shadow-sm bg-muted/20">
