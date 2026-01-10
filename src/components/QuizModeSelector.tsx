@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Languages, Book, Globe, Hash } from "lucide-react";
+import { Languages, Book, Globe, Hash, Clock } from "lucide-react";
 import type { QuizMode } from "@/types/quiz";
-import { Tooltip } from "@radix-ui/react-tooltip";
 import { StudyMode } from "./StudyMode";
 import { QuestionLimit } from "./QuestionLimit";
 import { StatSelector } from "./StatSelector";
+import { TimeLimitSelector } from "./TimeLimitSelector";
 
 interface QuizModeSelectorProps {
   selectedMode: QuizMode;
@@ -14,6 +12,8 @@ interface QuizModeSelectorProps {
   onQuestionLimitChange: (limit: number) => void;
   visibleStats: string[];
   onToggleStat: (stat: string) => void;
+  timeLimit: number;
+  onTimeLimitChange: (limit: number) => void;
 }
 
 export const QuizModeSelector = ({
@@ -23,6 +23,8 @@ export const QuizModeSelector = ({
   onQuestionLimitChange,
   visibleStats,
   onToggleStat,
+  timeLimit,
+  onTimeLimitChange,
 }: QuizModeSelectorProps) => {
   const modes = [
     {
@@ -57,13 +59,19 @@ export const QuizModeSelector = ({
         onModeChange={onModeChange}
         modes={modes}
         selectedMode={selectedMode}
-      ></StudyMode>
+      />
 
       {/* Question Limit */}
       <QuestionLimit
         questionLimits={questionLimits}
         selectedQuestionLimit={selectedQuestionLimit}
         onQuestionLimitChange={onQuestionLimitChange}
+      />
+
+      {/* Time Limit Selector */}
+      <TimeLimitSelector
+        timeLimit={timeLimit}
+        onTimeLimitChange={onTimeLimitChange}
       />
 
       {/* Stat Selector */}
