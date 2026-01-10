@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import { Timer } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Timer, Pause, Play } from "lucide-react";
 
 interface TimerProps {
   timeLimit: number;
   setTimeLimit: React.Dispatch<React.SetStateAction<number>>;
+  isActive: boolean;
+  onToggle: () => void;
 }
 
-export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
-  const [isTimerActive, setIsTimerActive] = useState(timeLimit > 0);
-  const [initialTime, setInitialTime] = useState(timeLimit);
-
-  useEffect(() => {
-    if (timeLimit > 0 && initialTime === 0) {
-      setInitialTime(timeLimit);
-    }
-  }, [timeLimit, initialTime]);
+export const QuizTimer = ({
+  timeLimit,
+  setTimeLimit,
+  isActive,
+  onToggle,
+}: TimerProps) => {
+  const [initialTime] = useState(timeLimit);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const onTimeUp = () => {
     console.log("Time's up!");
@@ -30,8 +31,7 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
   const getTimerColor = () => {
     if (timeLimit === 0) return "text-muted-foreground";
 
-    const baseTime = initialTime > 0 ? initialTime : timeLimit;
-    const percent = (timeLimit / baseTime) * 100;
+    const percent = (timeLimit / initialTime) * 100;
 
     if (percent > 50) return "text-success";
     if (percent > 25) return "text-warning";
@@ -41,8 +41,7 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
   const getTimerProgressBarColor = () => {
     if (timeLimit === 0) return "bg-muted";
 
-    const baseTime = initialTime > 0 ? initialTime : timeLimit;
-    const percent = (timeLimit / baseTime) * 100;
+    const percent = (timeLimit / initialTime) * 100;
 
     if (percent > 50) return "bg-success/70";
     if (percent > 25) return "bg-warning/70";
@@ -50,12 +49,18 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
   };
 
   useEffect(() => {
-    if (timeLimit <= 0 || !isTimerActive) return;
+    if (timeLimit <= 0 || !isActive) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
 
-    const timer = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setTimeLimit((prev: number) => {
         if (prev <= 1) {
-          clearInterval(timer);
+          clearInterval(intervalRef.current!);
           onTimeUp();
           return 0;
         }
@@ -63,51 +68,39 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [timeLimit, isTimerActive, setTimeLimit]);
-
-  const toggleTimer = () => {
-    if (timeLimit > 0) {
-      setIsTimerActive(!isTimerActive);
-    }
-  };
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [timeLimit, isActive, setTimeLimit]);
 
   if (timeLimit === 0) {
-    return (
-      <div className="rounded-xl border border-border p-4 shadow-sm bg-muted/20">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-muted-foreground">
-            Timer
-          </span>
-          <Timer className="h-4 w-4 text-muted-foreground" />
-        </div>
-        <div className="text-2xl font-bold text-muted-foreground font-mono">
-          ∞
-        </div>
-        <div className="mt-2">
-          <div className="h-1 w-full bg-muted rounded-full" />
-        </div>
-      </div>
-    );
+    return null;
   }
-
-  const progressWidth =
-    initialTime > 0 ? Math.max(0, (timeLimit / initialTime) * 100) : 0;
 
   return (
     <div className={`rounded-xl border border-border p-4 shadow-sm`}>
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-muted-foreground">Timer</span>
         <div className="flex items-center gap-1">
-          <Timer
-            className={`h-4 w-4 ${getTimerColor()}`}
-            onClick={toggleTimer}
-          />
+          <Timer className={`h-4 w-4 ${getTimerColor()}`} />
           <button
-            onClick={toggleTimer}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            onClick={onToggle}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
-            {isTimerActive ? "Pause" : "Resume"}
+            {isActive ? (
+              <>
+                <Pause className="h-3 w-3" />
+                Pause
+              </>
+            ) : (
+              <>
+                <Play className="h-3 w-3" />
+                Resume
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -120,7 +113,7 @@ export const QuizTimer = ({ timeLimit, setTimeLimit }: TimerProps) => {
           <div
             className={`h-full transition-all duration-1000 ${getTimerProgressBarColor()}`}
             style={{
-              width: `${progressWidth}%`,
+              width: `${Math.max(0, (timeLimit / initialTime) * 100)}%`,
             }}
           />
         </div>

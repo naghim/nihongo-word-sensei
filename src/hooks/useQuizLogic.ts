@@ -17,6 +17,7 @@ export const useQuizLogic = () => {
   const [showModeSelector, setShowModeSelector] = useState(true);
   const [timeLimit, setTimeLimit] = useState(60);
   const { toast } = useToast();
+  const [isTimerActive, setIsTimerActive] = useState(true);
 
   const [visibleStats, setVisibleStats] = useState<string[]>([
     "questionCounter",
@@ -77,6 +78,7 @@ export const useQuizLogic = () => {
   const startQuiz = () => {
     setIsQuizStarted(true);
     setIsQuizCompleted(false);
+    setIsTimerActive(true);
     setShowModeSelector(false);
     setTimeLimit(selectedTimeLimit);
     generateNewQuestion();
@@ -104,6 +106,7 @@ export const useQuizLogic = () => {
     setScore(0);
     setQuestionNumber(0);
     setStreak(0);
+    setIsTimerActive(true);
   };
 
   const handleTryAgain = () => {
@@ -114,6 +117,10 @@ export const useQuizLogic = () => {
     setVisibleStats((prev) =>
       prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat]
     );
+  };
+
+  const handleToggleTimer = () => {
+    setIsTimerActive(!isTimerActive);
   };
 
   return {
@@ -131,6 +138,7 @@ export const useQuizLogic = () => {
     visibleStats,
     timeLimit,
     selectedTimeLimit,
+    isTimerActive,
 
     // Actions
     setQuizMode,
@@ -143,5 +151,6 @@ export const useQuizLogic = () => {
     toggleStatVisibility,
     setTimeLimit,
     setSelectedTimeLimit,
+    handleToggleTimer,
   };
 };
