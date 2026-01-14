@@ -10,10 +10,12 @@ interface QuizWelcomeProps {
   questionLimit: number;
   showModeSelector: boolean;
   visibleStats: string[];
+  timeLimit: number;
   onModeChange: (mode: QuizMode) => void;
   onQuestionLimitChange: (limit: number) => void;
   onStartQuiz: () => void;
   onToggleStat: (stat: string) => void;
+  onTimeLimitChange: (limit: number) => void;
 }
 
 export const QuizWelcome = ({
@@ -22,10 +24,12 @@ export const QuizWelcome = ({
   questionLimit,
   showModeSelector,
   visibleStats,
+  timeLimit,
   onModeChange,
   onQuestionLimitChange,
   onStartQuiz,
   onToggleStat,
+  onTimeLimitChange,
 }: QuizWelcomeProps) => {
   const featureHighlights: Array<{
     icon: LucideIcon;
@@ -62,7 +66,7 @@ export const QuizWelcome = ({
     <div className="bg-gradient-to-br from-white via-red-50/20 to-white">
       <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-5 pb-5">
         {/* Content */}
-        <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-center">
+        <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-top">
           {/* Left Section - Hero */}
           <section className="space-y-10">
             <div className="space-y-8">
@@ -148,6 +152,8 @@ export const QuizWelcome = ({
                   onQuestionLimitChange={onQuestionLimitChange}
                   visibleStats={visibleStats}
                   onToggleStat={onToggleStat}
+                  timeLimit={timeLimit}
+                  onTimeLimitChange={onTimeLimitChange}
                 />
               )}
 

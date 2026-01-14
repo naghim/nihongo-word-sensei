@@ -1,9 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Target, Zap, HelpCircle } from "lucide-react";
 import { QuestionCounter } from "./QuestionCounter";
 import { Score } from "./Score";
 import { Accuracy } from "./Accuracy";
 import { Streak } from "./Streak";
+import { QuizTimer } from "./Timer";
 
 interface ScoreDisplayProps {
   score: number;
@@ -11,6 +10,10 @@ interface ScoreDisplayProps {
   current: number;
   streak: number;
   visibleStats: string[];
+  timeLimit: number;
+  setTimeLimit: (limit: number) => void;
+  isTimerActive: boolean;
+  onToggleTimer: () => void;
 }
 
 export const ScoreDisplay = ({
@@ -19,6 +22,10 @@ export const ScoreDisplay = ({
   current,
   streak,
   visibleStats,
+  timeLimit,
+  setTimeLimit,
+  isTimerActive,
+  onToggleTimer,
 }: ScoreDisplayProps) => {
   const percentage =
     total > 0 && current > 1 ? Math.round((score / (current - 1)) * 100) : 0;
@@ -40,8 +47,17 @@ export const ScoreDisplay = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {visibleStats.map((stat) => STAT_COMPONENTS[stat])}
+
+        {timeLimit > 0 && (
+          <QuizTimer
+            timeLimit={timeLimit}
+            setTimeLimit={setTimeLimit}
+            isActive={isTimerActive}
+            onToggle={onToggleTimer}
+          />
+        )}
       </div>
     </div>
   );

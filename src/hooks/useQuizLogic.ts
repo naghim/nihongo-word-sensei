@@ -15,13 +15,16 @@ export const useQuizLogic = () => {
   const [quizMode, setQuizMode] = useState<QuizMode>("kanji-to-english");
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [showModeSelector, setShowModeSelector] = useState(true);
+  const [timeLimit, setTimeLimit] = useState(60);
   const { toast } = useToast();
+  const [isTimerActive, setIsTimerActive] = useState(true);
 
   const [visibleStats, setVisibleStats] = useState<string[]>([
     "questionCounter",
     "score",
     "accuracy",
     "streak",
+    "timer",
   ]);
 
   const resetScroll = () => {
@@ -31,6 +34,9 @@ export const useQuizLogic = () => {
       behavior: "auto",
     });
   };
+
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState(60);
 
   const generateNewQuestion = () => {
     const randomItems = getRandomVocabulary(4);
@@ -63,10 +69,7 @@ export const useQuizLogic = () => {
 
     // Check if quiz is complete
     if (newQuestionNumber >= questionLimit) {
-      setTimeout(() => {
-        setIsQuizStarted(false);
-        setShowModeSelector(false);
-      }, 300);
+      setIsQuizCompleted(true);
     } else {
       setTimeout(generateNewQuestion, 300);
     }
@@ -74,27 +77,36 @@ export const useQuizLogic = () => {
 
   const startQuiz = () => {
     setIsQuizStarted(true);
+    setIsQuizCompleted(false);
+    setIsTimerActive(true);
     setShowModeSelector(false);
+    setTimeLimit(selectedTimeLimit);
     generateNewQuestion();
     resetScroll();
   };
 
   const resetQuiz = () => {
-    setScore(0);
-    setQuestionNumber(0);
-    setStreak(0);
+    resetStats();
+    setIsQuizCompleted(false);
     setIsQuizStarted(true);
+    setTimeLimit(selectedTimeLimit);
     generateNewQuestion();
   };
 
   const changeModeAndRestart = () => {
     setShowModeSelector(true);
     setIsQuizStarted(false);
+    setIsQuizCompleted(false);
+    resetStats();
+    setCurrentQuestion(null);
+    setOptions([]);
+  };
+
+  const resetStats = () => {
     setScore(0);
     setQuestionNumber(0);
     setStreak(0);
-    setCurrentQuestion(null);
-    setOptions([]);
+    setIsTimerActive(true);
   };
 
   const handleTryAgain = () => {
@@ -107,8 +119,9 @@ export const useQuizLogic = () => {
     );
   };
 
-  // Check if quiz is completed
-  const isQuizCompleted = questionNumber >= questionLimit && !isQuizStarted;
+  const handleToggleTimer = () => {
+    setIsTimerActive(!isTimerActive);
+  };
 
   return {
     // State
@@ -123,6 +136,9 @@ export const useQuizLogic = () => {
     showModeSelector,
     isQuizCompleted,
     visibleStats,
+    timeLimit,
+    selectedTimeLimit,
+    isTimerActive,
 
     // Actions
     setQuizMode,
@@ -133,5 +149,8 @@ export const useQuizLogic = () => {
     changeModeAndRestart,
     handleTryAgain,
     toggleStatVisibility,
+    setTimeLimit,
+    setSelectedTimeLimit,
+    handleToggleTimer,
   };
 };
