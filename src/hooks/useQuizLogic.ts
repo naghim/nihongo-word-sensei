@@ -5,7 +5,7 @@ import type { QuizMode, VocabularyItem } from "@/types/quiz";
 
 export const useQuizLogic = () => {
   const [currentQuestion, setCurrentQuestion] = useState<VocabularyItem | null>(
-    null
+    null,
   );
   const [options, setOptions] = useState<VocabularyItem[]>([]);
   const [score, setScore] = useState(0);
@@ -18,8 +18,7 @@ export const useQuizLogic = () => {
   const [timeLimit, setTimeLimit] = useState(60);
   const { toast } = useToast();
   const [isTimeUp, setIsTimeUp] = useState(false);
-  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
-  const [selectedTimeLimit, setSelectedTimeLimit] = useState(60);
+  const [isTimerActive, setIsTimerActive] = useState(true);
 
   const [visibleStats, setVisibleStats] = useState<string[]>([
     "questionCounter",
@@ -36,6 +35,9 @@ export const useQuizLogic = () => {
       behavior: "auto",
     });
   };
+
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [selectedTimeLimit, setSelectedTimeLimit] = useState(60);
 
   const generateNewQuestion = () => {
     const randomItems = getRandomVocabulary(4);
@@ -77,6 +79,7 @@ export const useQuizLogic = () => {
   const startQuiz = () => {
     setIsQuizStarted(true);
     setIsQuizCompleted(false);
+    setIsTimerActive(true);
     setShowModeSelector(false);
     setTimeLimit(selectedTimeLimit);
     generateNewQuestion();
@@ -105,21 +108,26 @@ export const useQuizLogic = () => {
     setQuestionNumber(0);
     setStreak(0);
     setIsTimeUp(false);
+    setIsTimerActive(true);
   };
 
   const handleTryAgain = () => {
     resetQuiz();
   };
 
-  const toggleStatVisibility = (stat: string) => {
-    setVisibleStats((prev) =>
-      prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat]
-    );
-  };
-
   const handleTimeUp = () => {
     setIsTimeUp(true);
     setIsQuizCompleted(true);
+  };
+
+  const handleToggleTimer = () => {
+    setIsTimerActive(!isTimerActive);
+  };
+
+  const toggleStatVisibility = (stat: string) => {
+    setVisibleStats((prev) =>
+      prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat],
+    );
   };
 
   return {
@@ -138,6 +146,7 @@ export const useQuizLogic = () => {
     timeLimit,
     selectedTimeLimit,
     isTimeUp,
+    isTimerActive,
 
     // Actions
     setQuizMode,
@@ -151,5 +160,6 @@ export const useQuizLogic = () => {
     setTimeLimit,
     setSelectedTimeLimit,
     handleTimeUp,
+    handleToggleTimer,
   };
 };

@@ -1,4 +1,4 @@
-import { Languages, Book, Globe, Hash } from "lucide-react";
+import { Languages, Book, Globe, Hash, Clock } from "lucide-react";
 import type { QuizMode } from "@/types/quiz";
 import { StudyMode } from "./StudyMode";
 import { QuestionLimit } from "./QuestionLimit";
@@ -59,7 +59,7 @@ export const QuizModeSelector = ({
         onModeChange={onModeChange}
         modes={modes}
         selectedMode={selectedMode}
-      ></StudyMode>
+      />
 
       {/* Question Limit */}
       <QuestionLimit
@@ -68,6 +68,7 @@ export const QuizModeSelector = ({
         onQuestionLimitChange={onQuestionLimitChange}
       />
 
+      {/* Time Limit Selector */}
       <TimeLimitSelector
         timeLimit={timeLimit}
         onTimeLimitChange={onTimeLimitChange}

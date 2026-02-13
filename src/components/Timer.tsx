@@ -1,19 +1,28 @@
-import { useEffect, useState } from "react";
-import { Timer } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Timer, Pause, Play } from "lucide-react";
 
 interface TimerProps {
   timeLimit: number;
   setTimeLimit: React.Dispatch<React.SetStateAction<number>>;
   onTimeUp: () => void;
+  isActive?: boolean;
+  onToggle?: () => void;
 }
 
 export const QuizTimer = ({
   timeLimit,
   setTimeLimit,
   onTimeUp,
+  isActive: externalIsActive,
+  onToggle: externalOnToggle,
 }: TimerProps) => {
-  const [isTimerActive, setIsTimerActive] = useState(timeLimit > 0);
+  const [internalIsActive, setInternalIsActive] = useState(timeLimit > 0);
   const [initialTime, setInitialTime] = useState(timeLimit);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const isControlled =
+    externalIsActive !== undefined && externalOnToggle !== undefined;
+  const isActive = isControlled ? externalIsActive : internalIsActive;
 
   useEffect(() => {
     if (timeLimit > 0 && initialTime === 0) {
@@ -50,13 +59,37 @@ export const QuizTimer = ({
     return "bg-destructive/70";
   };
 
-  useEffect(() => {
-    if (timeLimit <= 0 || !isTimerActive) return;
+  const toggleTimer = () => {
+    if (timeLimit <= 0) return;
 
-    const timer = setInterval(() => {
+    if (isControlled) {
+      externalOnToggle();
+    } else {
+      setInternalIsActive((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || timeLimit <= 0) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
       setTimeLimit((prev: number) => {
         if (prev <= 1) {
-          clearInterval(timer);
           onTimeUp();
           return 0;
         }
@@ -64,14 +97,13 @@ export const QuizTimer = ({
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [timeLimit, isTimerActive, setTimeLimit]);
-
-  const toggleTimer = () => {
-    if (timeLimit > 0) {
-      setIsTimerActive(!isTimerActive);
-    }
-  };
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isActive, timeLimit, setTimeLimit, onTimeUp]);
 
   if (timeLimit === 0) {
     return (
@@ -93,25 +125,34 @@ export const QuizTimer = ({
   }
 
   const progressWidth =
-    initialTime > 0 ? Math.max(0, (timeLimit / initialTime) * 100) : 0;
+    initialTime > 0 ? Math.max(0, (timeLimit / initialTime) * 100) : 100;
 
   return (
-    <div className={`rounded-xl border border-border p-4 shadow-sm`}>
+    <div className="rounded-xl border border-border p-4 shadow-sm">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-muted-foreground">Timer</span>
         <div className="flex items-center gap-1">
-          <Timer
-            className={`h-4 w-4 ${getTimerColor()}`}
-            onClick={toggleTimer}
-          />
+          <Timer className={`h-4 w-4 ${getTimerColor()}`} />
           <button
             onClick={toggleTimer}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            disabled={timeLimit === 0}
           >
-            {isTimerActive ? "Pause" : "Resume"}
+            {isActive ? (
+              <>
+                <Pause className="h-3 w-3" />
+                Pause
+              </>
+            ) : (
+              <>
+                <Play className="h-3 w-3" />
+                {timeLimit === 0 ? "Finished" : "Resume"}
+              </>
+            )}
           </button>
         </div>
       </div>
+
       <div className={`text-2xl font-bold ${getTimerColor()} font-mono`}>
         {formatTime(timeLimit)}
       </div>
