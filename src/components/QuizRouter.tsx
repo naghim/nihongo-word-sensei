@@ -87,6 +87,7 @@ export const QuizRouter = () => {
       onTimeUp={handleTimeUp}
       isTimerActive={isTimerActive}
       onToggleTimer={handleToggleTimer}
+      setTimeLimit={setTimeLimit}
     />,
   );
 };

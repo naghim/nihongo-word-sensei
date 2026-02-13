@@ -45,13 +45,6 @@ export const ScoreDisplay = ({
       <Accuracy percentage={percentage} getScoreColor={getScoreColor} />
     ),
     streak: <Streak streak={streak} />,
-    timer: (
-      <QuizTimer
-        timeLimit={timeLimit}
-        setTimeLimit={setTimeLimit}
-        onTimeUp={onTimeUp}
-      />
-    ),
   };
 
   return (
@@ -65,6 +58,7 @@ export const ScoreDisplay = ({
             setTimeLimit={setTimeLimit}
             isActive={isTimerActive}
             onToggle={onToggleTimer}
+            onTimeUp={onTimeUp}
           />
         )}
       </div>

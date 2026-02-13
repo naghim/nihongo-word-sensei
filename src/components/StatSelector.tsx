@@ -8,7 +8,6 @@ const STAT_LABELS = {
   score: "Score",
   accuracy: "Accuracy",
   streak: "Streak",
-  timer: "Timer",
 };
 
 export const StatSelector = ({
