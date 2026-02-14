@@ -11,8 +11,6 @@ export const TimeLimitSelector = ({
 }: TimeLimitSelectorProps) => {
   const timeOptions = [
     { value: 0, label: "No Timer" },
-    { value: 3, label: "3s" },
-    { value: 30, label: "30 seconds" },
     { value: 60, label: "1 minute" },
     { value: 120, label: "2 minutes" },
     { value: 180, label: "3 minutes" },

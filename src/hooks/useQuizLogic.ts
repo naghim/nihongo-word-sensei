@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRandomVocabulary } from "@/data/vocabulary";
 import { useToast } from "@/hooks/use-toast";
 import type { QuizMode, VocabularyItem } from "@/types/quiz";
@@ -47,6 +47,12 @@ export const useQuizLogic = () => {
     setCurrentQuestion(questionItem);
     setOptions(randomItems.sort(() => 0.5 - Math.random()));
   };
+
+  useEffect(() => {
+    if (isQuizCompleted) {
+      setIsTimerActive(false);
+    }
+  }, [isQuizCompleted]);
 
   const handleAnswer = (isCorrect: boolean) => {
     const newQuestionNumber = questionNumber + 1;
