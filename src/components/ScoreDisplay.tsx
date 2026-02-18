@@ -10,6 +10,7 @@ interface ScoreDisplayProps {
   current: number;
   streak: number;
   visibleStats: string[];
+  onTimeUp: () => void;
   timeLimit: number;
   setTimeLimit: (limit: number) => void;
   isTimerActive: boolean;
@@ -22,6 +23,7 @@ export const ScoreDisplay = ({
   current,
   streak,
   visibleStats,
+  onTimeUp,
   timeLimit,
   setTimeLimit,
   isTimerActive,
@@ -56,6 +58,7 @@ export const ScoreDisplay = ({
             setTimeLimit={setTimeLimit}
             isActive={isTimerActive}
             onToggle={onToggleTimer}
+            onTimeUp={onTimeUp}
           />
         )}
       </div>

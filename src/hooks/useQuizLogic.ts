@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRandomVocabulary } from "@/data/vocabulary";
 import { useToast } from "@/hooks/use-toast";
 import type { QuizMode, VocabularyItem } from "@/types/quiz";
 
 export const useQuizLogic = () => {
   const [currentQuestion, setCurrentQuestion] = useState<VocabularyItem | null>(
-    null
+    null,
   );
   const [options, setOptions] = useState<VocabularyItem[]>([]);
   const [score, setScore] = useState(0);
@@ -17,6 +17,7 @@ export const useQuizLogic = () => {
   const [showModeSelector, setShowModeSelector] = useState(true);
   const [timeLimit, setTimeLimit] = useState(60);
   const { toast } = useToast();
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   const [visibleStats, setVisibleStats] = useState<string[]>([
@@ -46,6 +47,12 @@ export const useQuizLogic = () => {
     setCurrentQuestion(questionItem);
     setOptions(randomItems.sort(() => 0.5 - Math.random()));
   };
+
+  useEffect(() => {
+    if (isQuizCompleted) {
+      setIsTimerActive(false);
+    }
+  }, [isQuizCompleted]);
 
   const handleAnswer = (isCorrect: boolean) => {
     const newQuestionNumber = questionNumber + 1;
@@ -106,6 +113,7 @@ export const useQuizLogic = () => {
     setScore(0);
     setQuestionNumber(0);
     setStreak(0);
+    setIsTimeUp(false);
     setIsTimerActive(true);
   };
 
@@ -113,14 +121,19 @@ export const useQuizLogic = () => {
     resetQuiz();
   };
 
-  const toggleStatVisibility = (stat: string) => {
-    setVisibleStats((prev) =>
-      prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat]
-    );
+  const handleTimeUp = () => {
+    setIsTimeUp(true);
+    setIsQuizCompleted(true);
   };
 
   const handleToggleTimer = () => {
     setIsTimerActive(!isTimerActive);
+  };
+
+  const toggleStatVisibility = (stat: string) => {
+    setVisibleStats((prev) =>
+      prev.includes(stat) ? prev.filter((s) => s !== stat) : [...prev, stat],
+    );
   };
 
   return {
@@ -138,6 +151,7 @@ export const useQuizLogic = () => {
     visibleStats,
     timeLimit,
     selectedTimeLimit,
+    isTimeUp,
     isTimerActive,
 
     // Actions
@@ -151,6 +165,7 @@ export const useQuizLogic = () => {
     toggleStatVisibility,
     setTimeLimit,
     setSelectedTimeLimit,
+    handleTimeUp,
     handleToggleTimer,
   };
 };

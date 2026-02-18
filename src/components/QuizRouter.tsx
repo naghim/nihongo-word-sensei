@@ -21,6 +21,7 @@ export const QuizRouter = () => {
     visibleStats,
     timeLimit,
     selectedTimeLimit,
+    isTimeUp,
     isTimerActive,
     setQuizMode,
     setQuestionLimit,
@@ -30,6 +31,7 @@ export const QuizRouter = () => {
     changeModeAndRestart,
     handleTryAgain,
     toggleStatVisibility,
+    handleTimeUp,
     setTimeLimit,
     setSelectedTimeLimit,
     handleToggleTimer,
@@ -47,17 +49,6 @@ export const QuizRouter = () => {
     </>
   );
 
-  if (isQuizCompleted) {
-    return layout(
-      <QuizResults
-        score={score}
-        questionLimit={questionLimit}
-        onTryAgain={handleTryAgain}
-        onChangeMode={changeModeAndRestart}
-      />
-    );
-  }
-
   if (!isQuizStarted) {
     return layout(
       <QuizWelcome
@@ -72,7 +63,7 @@ export const QuizRouter = () => {
         onStartQuiz={startQuiz}
         onToggleStat={toggleStatVisibility}
         onTimeLimitChange={setSelectedTimeLimit}
-      />
+      />,
     );
   }
 
@@ -87,13 +78,17 @@ export const QuizRouter = () => {
       streak={streak}
       visibleStats={visibleStats}
       timeLimit={timeLimit}
+      isTimeUp={isTimeUp}
+      isQuizCompleted={isQuizCompleted}
       onAnswer={handleAnswer}
       onChangeMode={changeModeAndRestart}
       onReset={resetQuiz}
-      setTimeLimit={setTimeLimit}
+      onTryAgain={handleTryAgain}
+      onTimeUp={handleTimeUp}
       isTimerActive={isTimerActive}
       onToggleTimer={handleToggleTimer}
-    />
+      setTimeLimit={setTimeLimit}
+    />,
   );
 };
 

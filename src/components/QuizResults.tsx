@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RotateCcw, Settings } from "lucide-react";
+import { RotateCcw, Settings, Timer } from "lucide-react";
 
 interface QuizResultsProps {
   score: number;
   questionLimit: number;
+  isTimeUp: boolean;
   onTryAgain: () => void;
   onChangeMode: () => void;
 }
@@ -12,34 +12,59 @@ interface QuizResultsProps {
 export const QuizResults = ({
   score,
   questionLimit,
+  isTimeUp,
   onTryAgain,
   onChangeMode,
 }: QuizResultsProps) => {
   const percentage = Math.round((score / questionLimit) * 100);
 
   const getResultMessage = () => {
+    if (isTimeUp) {
+      if (percentage >= 80) return "Great time management! ⏱️";
+      if (percentage >= 60) return "Good pace, keep going! 🏃‍♂️";
+      return "Time's up! Practice more to get faster! 🐌";
+    }
+
     if (percentage >= 80) return "Excellent work! 🎉";
     if (percentage >= 60) return "Good job! Keep practicing! 👍";
     return "Keep practicing, you're improving! 💪";
   };
 
+  const getTitle = () => {
+    return isTimeUp ? "時間切れ!" : "完了!";
+  };
+
+  const getSubtitle = () => {
+    return isTimeUp ? "Time's up!" : "Quiz complete!";
+  };
+
   return (
-    <div className="bg-gradient-to-br from-white via-red-50/20 to-white flex items-center py-8 px-4">
-      <div className="max-w-2xl mx-auto w-full space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+    <div className="min-h-screen w-full bg-gradient-to-br from-white via-red-50/20 to-white flex items-center justify-center py-8 px-4">
+      <div className="max-w-2xl w-full space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         {/* Hero Header */}
         <div className="text-center space-y-3">
           <h1 className="text-7xl font-japanese font-light text-foreground leading-none">
-            完了!
+            {getTitle()}
           </h1>
-          <p className="text-xl text-muted-foreground">Quiz complete!</p>
+          <p className="text-xl text-muted-foreground flex items-center justify-center gap-2">
+            {isTimeUp && <Timer className="h-5 w-5" />}
+            {getSubtitle()}
+          </p>
         </div>
 
         {/* Results Card */}
         <div className="rounded-2xl border border-border bg-white p-8 shadow-xl">
           <div className="text-center space-y-6">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                Results
+              <div
+                className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${
+                  isTimeUp
+                    ? "bg-destructive/10 text-destructive"
+                    : "bg-primary/10 text-primary"
+                }`}
+              >
+                {isTimeUp && <Timer className="h-3 w-3" />}
+                {isTimeUp ? "Time's Up!" : "Results"}
               </div>
 
               <div className="text-5xl font-bold text-primary">
@@ -48,6 +73,7 @@ export const QuizResults = ({
 
               <div className="text-xl text-muted-foreground">
                 {percentage}% Accuracy
+                {isTimeUp && " (under time pressure)"}
               </div>
 
               <div className="text-base text-foreground font-medium">
@@ -59,7 +85,11 @@ export const QuizResults = ({
               <Button
                 size="lg"
                 onClick={onTryAgain}
-                className="w-full justify-center rounded-xl px-6 py-4 text-base font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-primary hover:bg-primary/90"
+                className={`w-full justify-center rounded-xl px-6 py-4 text-base font-semibold shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
+                  isTimeUp
+                    ? "bg-destructive hover:bg-destructive/90"
+                    : "bg-primary hover:bg-primary/90"
+                }`}
               >
                 <RotateCcw className="w-5 h-5 mr-2" />
                 Try again

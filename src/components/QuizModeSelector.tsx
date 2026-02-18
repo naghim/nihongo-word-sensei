@@ -50,7 +50,7 @@ export const QuizModeSelector = ({
     },
   ];
 
-  const questionLimits = [10, 20, 30, 50, 100];
+  const questionLimits = [1, 10, 20, 30, 50, 100];
 
   return (
     <div className="space-y-4">
