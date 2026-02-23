@@ -15,6 +15,7 @@ export const QuizRouter = () => {
     streak,
     questionLimit,
     quizMode,
+    selectedJLPTLevel,
     isQuizStarted,
     showModeSelector,
     isQuizCompleted,
@@ -23,7 +24,9 @@ export const QuizRouter = () => {
     selectedTimeLimit,
     isTimeUp,
     isTimerActive,
+    vocabularyCountByLevel,
     setQuizMode,
+    setSelectedJLPTLevel,
     setQuestionLimit,
     handleAnswer,
     startQuiz,
@@ -54,11 +57,14 @@ export const QuizRouter = () => {
       <QuizWelcome
         vocabularyCount={vocabularyData.length}
         quizMode={quizMode}
+        selectedJLPTLevel={selectedJLPTLevel}
         questionLimit={questionLimit}
         showModeSelector={showModeSelector}
         visibleStats={visibleStats}
         timeLimit={selectedTimeLimit}
+        vocabularyCountByLevel={vocabularyCountByLevel}
         onModeChange={setQuizMode}
+        onJLPTLevelChange={setSelectedJLPTLevel}
         onQuestionLimitChange={setQuestionLimit}
         onStartQuiz={startQuiz}
         onToggleStat={toggleStatVisibility}

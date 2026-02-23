@@ -4,6 +4,7 @@ export interface VocabularyItem {
   hiragana: string;
   romanji: string;
   english: string;
+  jlptLevel?: string;
 }
 
 export const vocabularyData: VocabularyItem[] = [
@@ -13,6 +14,7 @@ export const vocabularyData: VocabularyItem[] = [
     hiragana: "いく",
     romanji: "iku",
     english: "go",
+    jlptLevel: "N5",
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ export const vocabularyData: VocabularyItem[] = [
     hiragana: "みる",
     romanji: "miru",
     english: "see, look at",
+    jlptLevel: "N5",
   },
   {
     id: 3,
@@ -7006,6 +7009,38 @@ export const vocabularyData: VocabularyItem[] = [
     hiragana: "ひみつ",
     romanji: "himitsu",
     english: "secret, privacy",
+  },
+  {
+    id: 1002,
+    kanji: "地獄",
+    hiragana: "じごく",
+    romanji: "jigoku",
+    english: "hell",
+    jlptLevel: "N3",
+  },
+  {
+    id: 1003,
+    kanji: "死",
+    hiragana: "し",
+    romanji: "shi",
+    english: "death",
+    jlptLevel: "N4",
+  },
+  {
+    id: 1004,
+    kanji: "精神",
+    hiragana: "せいしん",
+    romanji: "seishin",
+    english: "spirit",
+    jlptLevel: "N2",
+  },
+  {
+    id: 1005,
+    kanji: "病気",
+    hiragana: "びょうき",
+    romanji: "byouki",
+    english: "illness, sickness",
+    jlptLevel: "N5",
   },
 ];
 
