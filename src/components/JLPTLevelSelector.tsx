@@ -23,7 +23,7 @@ export const JLPTLevelSelector = ({
           const isSelected = selectedLevel === level;
           const wordCount =
             level === "all"
-              ? Object.values(vocabularyCountByLevel).reduce((a, b) => a + b, 0)
+              ? vocabularyCountByLevel.All
               : vocabularyCountByLevel[level] || 0;
 
           return (
