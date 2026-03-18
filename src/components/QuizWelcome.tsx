@@ -2,16 +2,19 @@ import { Button } from "@/components/ui/button";
 import { QuizModeSelector } from "./QuizModeSelector";
 import { BookOpen, Clock, PenSquare, Play, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { QuizMode } from "@/types/quiz";
+import type { QuizMode, JLPTLevel } from "@/types/quiz";
 
 interface QuizWelcomeProps {
   vocabularyCount: number;
   quizMode: QuizMode;
+  selectedJLPTLevel: JLPTLevel;
   questionLimit: number;
   showModeSelector: boolean;
   visibleStats: string[];
   timeLimit: number;
+  vocabularyCountByLevel: Record<string, number>;
   onModeChange: (mode: QuizMode) => void;
+  onJLPTLevelChange: (level: JLPTLevel) => void;
   onQuestionLimitChange: (limit: number) => void;
   onStartQuiz: () => void;
   onToggleStat: (stat: string) => void;
@@ -21,11 +24,14 @@ interface QuizWelcomeProps {
 export const QuizWelcome = ({
   vocabularyCount,
   quizMode,
+  selectedJLPTLevel,
   questionLimit,
   showModeSelector,
   visibleStats,
   timeLimit,
+  vocabularyCountByLevel,
   onModeChange,
+  onJLPTLevelChange,
   onQuestionLimitChange,
   onStartQuiz,
   onToggleStat,
@@ -148,12 +154,15 @@ export const QuizWelcome = ({
                 <QuizModeSelector
                   selectedMode={quizMode}
                   onModeChange={onModeChange}
+                  selectedJLPTLevel={selectedJLPTLevel}
+                  onJLPTLevelChange={onJLPTLevelChange}
                   selectedQuestionLimit={questionLimit}
                   onQuestionLimitChange={onQuestionLimitChange}
                   visibleStats={visibleStats}
                   onToggleStat={onToggleStat}
                   timeLimit={timeLimit}
                   onTimeLimitChange={onTimeLimitChange}
+                  vocabularyCountByLevel={vocabularyCountByLevel}
                 />
               )}
 

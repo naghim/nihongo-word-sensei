@@ -1,30 +1,37 @@
-import { Languages, Book, Globe, Hash, Clock } from "lucide-react";
-import type { QuizMode } from "@/types/quiz";
+import { Languages, Book, Globe } from "lucide-react";
+import type { QuizMode, JLPTLevel } from "@/types/quiz";
 import { StudyMode } from "./StudyMode";
 import { QuestionLimit } from "./QuestionLimit";
 import { StatSelector } from "./StatSelector";
 import { TimeLimitSelector } from "./TimeLimitSelector";
+import { JLPTLevelSelector } from "./JLPTLevelSelector";
 
 interface QuizModeSelectorProps {
   selectedMode: QuizMode;
   onModeChange: (mode: QuizMode) => void;
+  selectedJLPTLevel: JLPTLevel;
+  onJLPTLevelChange: (level: JLPTLevel) => void;
   selectedQuestionLimit: number;
   onQuestionLimitChange: (limit: number) => void;
   visibleStats: string[];
   onToggleStat: (stat: string) => void;
   timeLimit: number;
   onTimeLimitChange: (limit: number) => void;
+  vocabularyCountByLevel: Record<string, number>;
 }
 
 export const QuizModeSelector = ({
   selectedMode,
   onModeChange,
+  selectedJLPTLevel,
+  onJLPTLevelChange,
   selectedQuestionLimit,
   onQuestionLimitChange,
   visibleStats,
   onToggleStat,
   timeLimit,
   onTimeLimitChange,
+  vocabularyCountByLevel,
 }: QuizModeSelectorProps) => {
   const modes = [
     {
@@ -53,7 +60,14 @@ export const QuizModeSelector = ({
   const questionLimits = [1, 10, 20, 30, 50, 100];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* JLPT Level Selector */}
+      <JLPTLevelSelector
+        selectedLevel={selectedJLPTLevel}
+        onLevelChange={onJLPTLevelChange}
+        vocabularyCountByLevel={vocabularyCountByLevel}
+      />
+
       {/* Study Mode */}
       <StudyMode
         onModeChange={onModeChange}

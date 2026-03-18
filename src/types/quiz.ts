@@ -1,5 +1,7 @@
 import type { VocabularyItem } from "@/data/vocabulary";
 
+export type JLPTLevel = "N5" | "N4" | "N3" | "N2" | "N1" | "all";
+
 export type QuizMode =
   | "kanji-to-english"
   | "romanji-to-english"
